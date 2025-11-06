@@ -4,12 +4,6 @@
   "outputDirectory": "apps/client/.next",
   "framework": "nextjs",
   "installCommand": "npm install",
-  "devCommand": "cd apps/client && npm run dev",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ]
+  "devCommand": "cd apps/client && npm run dev"
 }
 
