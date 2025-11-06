@@ -83,7 +83,7 @@ curl -X POST http://localhost:3001/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "username": "admin",
-    "password": "demo123",
+    "password": "admin123",
     "role": "Admin",
     "registrationToken": "demo-token-for-testing-12345"
   }'
@@ -95,7 +95,7 @@ Or create via API tool:
   ```json
   {
     "username": "admin",
-    "password": "demo123",
+    "password": "admin123",
     "role": "Admin",
     "registrationToken": "demo-token-for-testing-12345"
   }
@@ -105,7 +105,7 @@ Or create via API tool:
 
 1. Open browser: `http://localhost:3000`
 2. Login with demo credentials:
-   - **Admin**: Username: `admin`, Password: `demo123`
+   - **Admin**: Username: `admin`, Password: `admin123`
    - **Staff**: Username: `staff`, Password: `demo123`
 
 ## 📊 Quick Test Flow
