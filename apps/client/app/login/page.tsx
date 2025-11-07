@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { authApi } from '@/lib/api/auth';
+import type { User } from '@/lib/types';
 import { useAuthStore } from '@/lib/stores/auth.store';
 
 export default function LoginPage() {
@@ -16,7 +17,16 @@ export default function LoginPage() {
   const loginMutation = useMutation({
     mutationFn: authApi.login,
     onSuccess: (data) => {
-      setAuth(data.user, data.accessToken);
+      const normalizedRole: 'Admin' | 'Staff' =
+        data.user.role.toLowerCase() === 'admin' ? 'Admin' : 'Staff';
+
+      const typedUser: User = {
+        userId: data.user.userId,
+        username: data.user.username,
+        role: normalizedRole,
+      };
+
+      setAuth(typedUser, data.accessToken);
       router.push('/dashboard');
     },
     onError: (error: any) => {
