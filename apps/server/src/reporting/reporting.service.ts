@@ -68,39 +68,35 @@ export class ReportingService {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     };
-    // Prefer system Chrome if available (helps on environments where bundled Chromium fails)
-    if (!process.env.PUPPETEER_EXECUTABLE_PATH) {
-      if (process.platform === 'win32') {
-        const candidate = 'C\\\u003A\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'.replace('\\\u003A', ':');
-        if (fs.existsSync('C:/Program Files/Google/Chrome/Application/chrome.exe')) {
-          launchOptions.executablePath = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
-        } else if (fs.existsSync('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe')) {
-          launchOptions.executablePath = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe';
-        }
+    try {
+      // Prefer env path; else Puppeteer's bundled Chromium
+      if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+        launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+      } else if (typeof (puppeteer as any).executablePath === 'function') {
+        launchOptions.executablePath = (puppeteer as any).executablePath();
       }
-    } else {
-      launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+
+      const browser = await puppeteer.launch(launchOptions);
+      const page = await browser.newPage();
+      await page.setContent(html, { waitUntil: 'domcontentloaded' });
+
+      const pdf = await page.pdf({
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '20mm',
+          right: '15mm',
+          bottom: '20mm',
+          left: '15mm',
+        },
+      });
+
+      await browser.close();
+
+      return Buffer.from(pdf);
+    } catch (err) {
+      throw new Error(`Failed to generate PDF: ${(err as Error).message}`);
     }
-
-    const browser = await puppeteer.launch(launchOptions);
-
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'domcontentloaded' });
-
-    const pdf = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: {
-        top: '20mm',
-        right: '15mm',
-        bottom: '20mm',
-        left: '15mm',
-      },
-    });
-
-    await browser.close();
-
-    return Buffer.from(pdf);
   }
 
   private generateHtmlTemplate(
