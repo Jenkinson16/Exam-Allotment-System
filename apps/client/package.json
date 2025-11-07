@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postinstall": "npm rebuild lightningcss"
+    "postinstall": "npm rebuild @tailwindcss/oxide lightningcss || true"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.5",
