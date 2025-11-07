@@ -66,16 +66,26 @@ export class ReportingService {
     // Generate PDF using Puppeteer
     const launchOptions: any = {
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     };
+    
     try {
-      // Prefer env path; else Puppeteer's bundled Chromium
+      // Use environment variable if set, otherwise let Puppeteer find Chromium
       if (process.env.PUPPETEER_EXECUTABLE_PATH) {
         launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
-      } else if (typeof (puppeteer as any).executablePath === 'function') {
-        launchOptions.executablePath = (puppeteer as any).executablePath();
+        console.log(`Using Puppeteer executable: ${launchOptions.executablePath}`);
+      } else {
+        // Try to get executable path from Puppeteer
+        try {
+          const puppeteerCore = require('puppeteer-core');
+          // This won't work, but let's try the main export
+        } catch (e) {
+          // Ignore
+        }
+        console.log('Using default Puppeteer Chromium');
       }
 
+      console.log('Launching browser with options:', JSON.stringify(launchOptions, null, 2));
       const browser = await puppeteer.launch(launchOptions);
       const page = await browser.newPage();
       await page.setContent(html, { waitUntil: 'domcontentloaded' });
@@ -95,7 +105,10 @@ export class ReportingService {
 
       return Buffer.from(pdf);
     } catch (err) {
-      throw new Error(`Failed to generate PDF: ${(err as Error).message}`);
+      console.error('PDF generation error:', err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      const errorStack = err instanceof Error ? err.stack : '';
+      throw new Error(`Failed to generate PDF: ${errorMessage}. Stack: ${errorStack}`);
     }
   }
 
