@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd apps/client && npm install && npm run build",
+  "buildCommand": "npm install --prefix apps/client && npm run build --prefix apps/client",
   "outputDirectory": "apps/client/.next",
-  "installCommand": "cd apps/client && npm install",
+  "installCommand": "npm install --prefix apps/client",
   "framework": "nextjs"
 }
 

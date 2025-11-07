@@ -1,0 +1,27 @@
+student_id,student_name,department_name
+CS001,John Doe,Computer Science
+CS002,Jane Smith,Computer Science
+CS003,Michael Johnson,Computer Science
+CS004,Emily Davis,Computer Science
+CS005,David Wilson,Computer Science
+EE001,Sarah Brown,Electrical Engineering
+EE002,James Taylor,Electrical Engineering
+EE003,Linda Anderson,Electrical Engineering
+EE004,Robert Thomas,Electrical Engineering
+EE005,Patricia Jackson,Electrical Engineering
+ME001,Christopher White,Mechanical Engineering
+ME002,Nancy Harris,Mechanical Engineering
+ME003,Daniel Martin,Mechanical Engineering
+ME004,Lisa Thompson,Mechanical Engineering
+ME005,Matthew Garcia,Mechanical Engineering
+CE001,Jennifer Martinez,Civil Engineering
+CE002,Joshua Robinson,Civil Engineering
+CE003,Ashley Clark,Civil Engineering
+CE004,Andrew Rodriguez,Civil Engineering
+CE005,Jessica Lewis,Civil Engineering
+IT001,Ryan Lee,Information Technology
+IT002,Amanda Walker,Information Technology
+IT003,Justin Hall,Information Technology
+IT004,Stephanie Allen,Information Technology
+IT005,Brandon Young,Information Technology
+
